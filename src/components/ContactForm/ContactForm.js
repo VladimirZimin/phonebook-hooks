@@ -1,16 +1,43 @@
 import React, { useState } from "react";
+import {
+  useAddContactMutation,
+  useGetContactsQuery,
+} from "../../services/services";
+import { Button, Form, Input } from "./ContactForm.styled";
 
-const ContactForm = ({ onAddContact }) => {
+const ContactForm = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+  const [addContact, { isLoading }] = useAddContactMutation();
+  const { data: contacts } = useGetContactsQuery();
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
-
-    onAddContact({ name, number });
+    addContact({ name, phone: number });
     setName("");
     setNumber("");
   };
+
+  const isContactExist =
+    contacts &&
+    contacts.find(
+      (contact) => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+  if (isContactExist) {
+    console.log(`Contact with name ${name} already exists!`);
+  }
+
+  const isNumberExist =
+    contacts &&
+    contacts.find(
+      (contact) =>
+        contact.phone.replace(/\D/g, "") === number.replace(/\D/g, "")
+    );
+
+  if (isNumberExist) {
+    console.log(`Number ${number} is already in contacts!`);
+  }
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -30,8 +57,8 @@ const ContactForm = ({ onAddContact }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <input
+    <Form onSubmit={handleSubmit} autoComplete="off">
+      <Input
         type="text"
         name="name"
         value={name}
@@ -42,7 +69,7 @@ const ContactForm = ({ onAddContact }) => {
         required
       />
 
-      <input
+      <Input
         type="tel"
         name="number"
         value={number}
@@ -52,8 +79,15 @@ const ContactForm = ({ onAddContact }) => {
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
       />
-      <button type="submit">Add contact</button>
-    </form>
+      {name && number && (
+        <Button
+          type="submit"
+          disabled={isContactExist || isLoading || isNumberExist}
+        >
+          Add contact
+        </Button>
+      )}
+    </Form>
   );
 };
 
