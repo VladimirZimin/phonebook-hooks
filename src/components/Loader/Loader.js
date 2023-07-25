@@ -7,7 +7,11 @@ const Loader = () => {
       height={30}
       width={30}
       color="#ffffff"
-      wrapperStyle={{ display: "flex", justifyContent: "center" }}
+      wrapperStyle={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
       wrapperClass=""
       visible={true}
       ariaLabel="oval-loading"

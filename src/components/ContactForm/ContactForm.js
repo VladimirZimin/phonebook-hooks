@@ -3,7 +3,8 @@ import {
   useAddContactMutation,
   useGetContactsQuery,
 } from "../../services/services";
-import { Button, Form, Input } from "./ContactForm.styled";
+import { Button, Form, Input, Wrap } from "./ContactForm.styled";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -14,6 +15,9 @@ const ContactForm = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     addContact({ name, phone: number });
+    toast.info(`You added a contact: ${name}`, {
+      theme: "dark",
+    });
     setName("");
     setNumber("");
   };
@@ -64,8 +68,10 @@ const ContactForm = () => {
         value={name}
         onChange={handleChange}
         placeholder="Name"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+        // pattern="[A-Za-zА-Яа-яЁё]*?\s[A-Za-zА-Яа-яЁё]*$"
+        // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])*?[a-zA-Zа-яА-Я]*)*$"
+        // pattern="^[a-zA-Zа-яА-Я]+\s[a-zA-Zа-яА-Я]+*$"
+        title="Name may contain only letters. For example 'Jacob Mercer'"
         required
       />
 
@@ -75,17 +81,19 @@ const ContactForm = () => {
         value={number}
         onChange={handleChange}
         placeholder="Number"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+        pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
+        title="Phone number must be format: 012-34-56-789"
         required
       />
       {name && number && (
-        <Button
-          type="submit"
-          disabled={isContactExist || isLoading || isNumberExist}
-        >
-          Add contact
-        </Button>
+        <Wrap>
+          <Button
+            type="submit"
+            disabled={isContactExist || isLoading || isNumberExist}
+          >
+            Add contact
+          </Button>
+        </Wrap>
       )}
     </Form>
   );

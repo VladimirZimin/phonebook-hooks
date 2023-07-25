@@ -1,10 +1,25 @@
-// import { persistReducer } from "redux-persist";
-// import storage from "redux-persist/lib/storage";
-// import { mySlice } from "./slice";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { filterSlice } from "./slice";
+import { authReducer } from "./authSlice";
 
-// const persistConfig = {
-//   key: "root",
-//   storage,
-// };
+const filterPersistConfig = {
+  key: "root",
+  storage,
+};
 
-// export const persistedReducer = persistReducer(persistConfig, mySlice.reducer);
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["token"],
+};
+
+export const persistedReducer = persistReducer(
+  filterPersistConfig,
+  filterSlice.reducer
+);
+
+export const authPersistedReducer = persistReducer(
+  authPersistConfig,
+  authReducer
+);

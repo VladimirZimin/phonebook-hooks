@@ -1,3 +1,8 @@
+import { createGlobalStyle } from "styled-components";
+import Theme, { ColorDark, ColorLight } from "../../theme/theme";
+
+const GlobalReset = createGlobalStyle`
+
 *,
 *::before,
 *::after {
@@ -10,6 +15,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: ${({ theme }) =>
+    theme.current === Theme.LIGHT ? ColorLight.BG : ColorDark.BG} 
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -45,3 +53,6 @@ img {
 input {
   padding-left: 25px;
 }
+`;
+
+export default GlobalReset;

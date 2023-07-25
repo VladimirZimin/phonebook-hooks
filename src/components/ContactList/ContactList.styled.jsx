@@ -1,15 +1,20 @@
 import { styled } from "styled-components";
 import { MdClose } from "react-icons/md";
+import Theme, { ColorDark, ColorLight } from "../../theme/theme";
+import { motion } from "framer-motion";
 
 export const DeleteBtn = styled(MdClose)`
-  background-color: none;
-  color: #0f0534;
+  background-color: ${({ theme }) =>
+    theme.current === Theme.LIGHT ? ColorLight.BG : ColorDark.BG};
+  color: ${({ theme }) =>
+    theme.current === Theme.LIGHT ? ColorDark.BG : ColorLight.DELETEBTN};
 `;
 
 export const Button = styled.button`
   padding: 0;
   font-size: 18px;
-  background-color: white;
+  background-color: ${({ theme }) =>
+    theme.current === Theme.LIGHT ? ColorLight.BG : ColorDark.BG};
   border: none;
 
   &:hover {
@@ -17,9 +22,11 @@ export const Button = styled.button`
   }
 `;
 
-export const List = styled.li`
+export const List = styled(motion.li)`
   display: flex;
   justify-content: space-between;
+  color: ${({ theme }) =>
+    theme.current === Theme.LIGHT ? ColorLight.TEXT : ColorDark.TEXT};
 `;
 
 export const Phone = styled.p`

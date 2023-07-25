@@ -1,50 +1,71 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { MdOutlineSearch } from "react-icons/md";
-import Section from "./components/Section";
-import { Button, FindWrap, MdBtn } from "./App.styled";
-import ContactList from "./components/ContactList/ContactList";
-import Filter from "./components/Filter/Filter";
-import ContactForm from "./components/ContactForm/ContactForm";
-import { useGetContactsQuery } from "./services/services";
-import Loader from "./components/Loader/Loader";
-import { selectFilter } from "./redux/selectors";
+import React, { Suspense, lazy, useState } from "react";
+import Theme from "./theme/theme";
+import { ThemeProvider } from "styled-components";
+import GlobalReset from "./style/globalStyle/GlobalReset";
+import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import { Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { currentUser } from "./redux/operations";
+import { selectIsRefreshing } from "./redux/selectors";
+import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
+import { RestrictedRoute } from "./components/RestrictedRoute/RestrictedRoute";
+import Notify from "./components/Notify/Notify";
+import "react-toastify/dist/ReactToastify.css";
+
+const Register = lazy(() => import("./pages/Register/Register"));
+const Login = lazy(() => import("./pages/Login/Login"));
+const Contacts = lazy(() => import("./pages/Contacts/Contacts"));
 
 const App = () => {
-  const [formToogle, setFormToogle] = useState(false);
-  const filter = useSelector(selectFilter);
-  const { data: contacts, isLoading } = useGetContactsQuery();
+  const [theme, setTheme] = useState(
+    () => JSON.parse(window.localStorage.getItem("phoneTheme")) ?? Theme.LIGHT
+  );
+  const isRefreshing = useSelector(selectIsRefreshing);
+  const dispatch = useDispatch();
 
-  const getVisibleContacts = () => {
-    return (
-      contacts &&
-      contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(filter.toLowerCase())
-      )
-    );
+  const toggleTheme = () => {
+    setTheme(theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT);
   };
 
-  return (
-    <>
-      <Section title={"Phonebook"}>
-        <FindWrap>
-          <Filter />
-          <MdOutlineSearch className="react-icons" color="" size={20} />
-        </FindWrap>
-        <Button type="button" onClick={() => setFormToogle(!formToogle)}>
-          <MdBtn />
-        </Button>
-        {formToogle && <ContactForm />}
-      </Section>
+  useEffect(
+    () => window.localStorage.setItem("phoneTheme", JSON.stringify(theme)),
+    [theme]
+  );
 
-      <Section>
-        {isLoading ? (
-          <Loader />
+  useEffect(() => {
+    dispatch(currentUser());
+  }, [dispatch]);
+
+  return (
+    <ThemeProvider theme={{ current: theme, toggleTheme }}>
+      <GlobalReset />
+      <Suspense fallback={""}>
+        {isRefreshing ? (
+          <Notify />
         ) : (
-          <ContactList contacts={getVisibleContacts()} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PrivateRoute redirectTo="/login" component={<Contacts />} />
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <RestrictedRoute redirectTo="/" component={<Register />} />
+              }
+            />
+            <Route
+              path="/login"
+              element={<RestrictedRoute redirectTo="/" component={<Login />} />}
+            />
+          </Routes>
         )}
-      </Section>
-    </>
+      </Suspense>
+      <ToastContainer position="bottom-center" autoClose={3000} />
+    </ThemeProvider>
   );
 };
 
