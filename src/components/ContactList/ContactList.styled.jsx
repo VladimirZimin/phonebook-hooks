@@ -1,13 +1,23 @@
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
 import { MdClose } from "react-icons/md";
+import { AiOutlineEdit } from "react-icons/ai";
 import Theme, { ColorDark, ColorLight } from "../../theme/theme";
 import { motion } from "framer-motion";
 
-export const DeleteBtn = styled(MdClose)`
+const buttonStyle = css`
   background-color: ${({ theme }) =>
     theme.current === Theme.LIGHT ? ColorLight.BG : ColorDark.BG};
   color: ${({ theme }) =>
     theme.current === Theme.LIGHT ? ColorDark.BG : ColorLight.DELETEBTN};
+`;
+
+export const DeleteBtn = styled(MdClose)`
+  ${buttonStyle}
+`;
+
+export const EditBtn = styled(AiOutlineEdit)`
+  ${buttonStyle}
+  margin-right: -20px;
 `;
 
 export const Button = styled.button`

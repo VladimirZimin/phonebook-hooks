@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { signUp } from "../../redux/operations";
+import { signUp } from "../../redux/auth/operations";
 import {
   Button,
   Form,

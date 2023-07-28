@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import { filterSlice } from "./slice";
-import { contactApi } from "../services/services";
+import { contactApi } from "./contacts/services";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { authPersistedReducer, persistedReducer } from "./configureStore";
 import {
@@ -12,11 +12,13 @@ import {
   REGISTER,
   persistStore,
 } from "redux-persist";
+import { contactSlice } from "./contacts/contactSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authPersistedReducer,
-    contacts: persistedReducer,
+    filters: persistedReducer,
+    contact: contactSlice.reducer,
     [contactApi.reducerPath]: contactApi.reducer,
   },
 

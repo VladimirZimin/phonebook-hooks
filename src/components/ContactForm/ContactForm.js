@@ -2,21 +2,24 @@ import React, { useState } from "react";
 import {
   useAddContactMutation,
   useGetContactsQuery,
-} from "../../services/services";
+} from "../../redux/contacts/services";
 import { Button, Form, Input, Wrap } from "./ContactForm.styled";
 import { toast } from "react-toastify";
+import Theme from "../../theme/theme";
+import { useTheme } from "styled-components";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [addContact, { isLoading }] = useAddContactMutation();
   const { data: contacts } = useGetContactsQuery();
+  const { current } = useTheme();
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    addContact({ name, phone: number });
+    addContact({ name, number: number });
     toast.info(`You added a contact: ${name}`, {
-      theme: "dark",
+      theme: current === Theme.LIGHT ? "light" : "dark",
     });
     setName("");
     setNumber("");
@@ -29,18 +32,22 @@ const ContactForm = () => {
     );
 
   if (isContactExist) {
-    console.log(`Contact with name ${name} already exists!`);
+    toast.error(`Contact with name ${name} already exists!`, {
+      theme: current === Theme.LIGHT ? "light" : "dark",
+    });
   }
 
   const isNumberExist =
     contacts &&
     contacts.find(
       (contact) =>
-        contact.phone.replace(/\D/g, "") === number.replace(/\D/g, "")
+        contact.number.replace(/\D/g, "") === number.replace(/\D/g, "")
     );
 
   if (isNumberExist) {
-    console.log(`Number ${number} is already in contacts!`);
+    toast.error(`Number ${number} is already in contacts!`, {
+      theme: current === Theme.LIGHT ? "light" : "dark",
+    });
   }
 
   const handleChange = (evt) => {
@@ -68,10 +75,6 @@ const ContactForm = () => {
         value={name}
         onChange={handleChange}
         placeholder="Name"
-        // pattern="[A-Za-zА-Яа-яЁё]*?\s[A-Za-zА-Яа-яЁё]*$"
-        // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])*?[a-zA-Zа-яА-Я]*)*$"
-        // pattern="^[a-zA-Zа-яА-Я]+\s[a-zA-Zа-яА-Я]+*$"
-        title="Name may contain only letters. For example 'Jacob Mercer'"
         required
       />
 

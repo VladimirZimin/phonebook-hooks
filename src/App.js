@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser } from "./redux/operations";
+import { currentUser } from "./redux/auth/operations";
 import { selectIsRefreshing } from "./redux/selectors";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import { RestrictedRoute } from "./components/RestrictedRoute/RestrictedRoute";

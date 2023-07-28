@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filter } from "../../redux/slice";
+import { filter } from "../../redux/filter/slice";
 import { selectFilter } from "../../redux/selectors";
-import { useGetContactsQuery } from "../../services/services";
+import { useGetContactsQuery } from "../../redux/contacts/services";
 import { Input } from "./Filter.styled";
 import { MdOutlineSearch } from "react-icons/md";
 import Theme, { ColorDark, ColorLight } from "../../theme/theme";

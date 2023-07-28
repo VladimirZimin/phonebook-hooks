@@ -1,18 +1,33 @@
 import {
   useDeleteContactMutation,
   useGetContactsQuery,
-} from "../../services/services";
-import { Button, DeleteBtn, List, Name, Phone } from "./ContactList.styled";
+} from "../../redux/contacts/services";
+import {
+  Button,
+  DeleteBtn,
+  EditBtn,
+  List,
+  Name,
+  Phone,
+} from "./ContactList.styled";
 import { selectFilter } from "../../redux/selectors";
 import Section from "../Section/Section";
 import Loader from "../Loader/Loader";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import EditForm from "../EditForm/EditForm";
+import { useTheme } from "styled-components";
+import Theme from "../../theme/theme";
 
 const ContactList = () => {
+  const [showInput, setShowInput] = useState("");
+  const [editContact, setEditContact] = useState({});
+  const [closeEditForm, setCloseEditForm] = useState(true);
   const [deleteContactApi] = useDeleteContactMutation();
   const { data: contacts, isLoading } = useGetContactsQuery();
   const filter = useSelector(selectFilter);
+  const { current } = useTheme();
 
   const getVisibleContacts = () => {
     return (
@@ -26,8 +41,18 @@ const ContactList = () => {
   const deleteContact = (name, id) => {
     deleteContactApi(id);
     toast.error(`You deleted the contact: ${name}`, {
-      theme: "dark",
+      theme: current === Theme.LIGHT ? "light" : "dark",
     });
+  };
+
+  const handleEditContact = (editContact) => {
+    setShowInput(editContact.id);
+    setEditContact(editContact);
+    setCloseEditForm(true);
+  };
+
+  const handleCloseEditForm = (value) => {
+    setCloseEditForm(value);
   };
 
   return (
@@ -48,13 +73,27 @@ const ContactList = () => {
                 ease: [0, 0.71, 0.2, 1.01],
               }}
             >
-              <Name>
-                <b>{contact.name}:</b>
-              </Name>
-              <Phone>{contact.phone}</Phone>
-              <Button onClick={() => deleteContact(contact.name, contact.id)}>
-                <DeleteBtn />
-              </Button>
+              {showInput === contact.id && closeEditForm ? (
+                <EditForm
+                  contacts={editContact}
+                  closeEditForm={handleCloseEditForm}
+                />
+              ) : (
+                <>
+                  <Name>
+                    <b>{contact.name}:</b>
+                  </Name>
+                  <Phone>{contact.number}</Phone>
+                  <Button onClick={() => handleEditContact(contact)}>
+                    <EditBtn />
+                  </Button>
+                  <Button
+                    onClick={() => deleteContact(contact.name, contact.id)}
+                  >
+                    <DeleteBtn />
+                  </Button>
+                </>
+              )}
             </List>
           ))}
         </ul>

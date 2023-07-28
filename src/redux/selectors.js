@@ -1,7 +1,9 @@
-export const selectFilter = (state) => state.contacts.filter;
+export const selectFilter = (state) => state.filters.filter;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 
 export const selectUser = (state) => state.auth.user;
 
 export const selectIsRefreshing = (state) => state.auth.isRefreshing;
+
+export const selectShowEditForm = (state) => state.contact.isShow;

@@ -1,7 +1,7 @@
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { filterSlice } from "./slice";
-import { authReducer } from "./authSlice";
+import { filterSlice } from "./filter/slice";
+import { authReducer } from "./auth/authSlice";
 
 const filterPersistConfig = {
   key: "root",

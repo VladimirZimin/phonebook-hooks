@@ -2,7 +2,7 @@ import React from "react";
 import { LogOutBtn, LogOutIcon } from "../../style/Button.styled";
 import { useTheme } from "styled-components";
 import { useDispatch } from "react-redux";
-import { logOut } from "../../redux/operations";
+import { logOut } from "../../redux/auth/operations";
 import Theme, { ColorDark, ColorLight } from "../../theme/theme";
 
 const LogOutButton = () => {
