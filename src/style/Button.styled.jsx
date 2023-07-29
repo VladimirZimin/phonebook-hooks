@@ -25,7 +25,7 @@ export const FindWrap = styled.div`
 export const Button = styled.button`
   position: absolute;
   top: 0;
-  right: 0;
+  right: 15px;
   padding: 0;
   background-color: ${({ theme }) =>
     theme.current === Theme.LIGHT ? ColorLight.BG : ColorDark.BG};
@@ -39,13 +39,13 @@ export const Button = styled.button`
 export const ThemeBtn = styled(Button)`
   width: 10px;
   top: 3px;
-  left: 35px;
+  left: 50px;
 `;
 
 export const LogOutBtn = styled(Button)`
   width: 10px;
   top: 2px;
-  left: 0px;
+  left: 15px;
 `;
 
 export const MdBtn = styled(MdAdd)`

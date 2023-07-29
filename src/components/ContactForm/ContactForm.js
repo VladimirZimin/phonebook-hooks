@@ -7,6 +7,7 @@ import { Button, Form, Input, Wrap } from "./ContactForm.styled";
 import { toast } from "react-toastify";
 import Theme from "../../theme/theme";
 import { useTheme } from "styled-components";
+import InputMask from "react-input-mask";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -59,6 +60,8 @@ const ContactForm = () => {
         break;
 
       case "number":
+        console.log(value);
+
         setNumber(value);
         break;
 
@@ -78,16 +81,25 @@ const ContactForm = () => {
         required
       />
 
-      <Input
-        type="tel"
-        name="number"
-        value={number}
+      <InputMask
+        mask="+38(999)-99-99-999"
+        maskPlaceholder="-"
         onChange={handleChange}
+        value={number}
         placeholder="Number"
-        pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
-        title="Phone number must be format: 012-34-56-789"
-        required
-      />
+      >
+        <Input
+          type="tel"
+          name="number"
+          value={number}
+          onChange={handleChange}
+          placeholder="Number"
+          // pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
+          // title="Phone number must be format: 012-34-56-789"
+          required
+        />
+      </InputMask>
+
       {name && number && (
         <Wrap>
           <Button

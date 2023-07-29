@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "./redux/auth/operations";
-import { selectIsRefreshing } from "./redux/selectors";
+import { selectIsLoggedIn, selectIsRefreshing } from "./redux/selectors";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import { RestrictedRoute } from "./components/RestrictedRoute/RestrictedRoute";
 import Notify from "./components/Notify/Notify";
@@ -22,6 +22,8 @@ const App = () => {
     () => JSON.parse(window.localStorage.getItem("phoneTheme")) ?? Theme.LIGHT
   );
   const isRefreshing = useSelector(selectIsRefreshing);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   const dispatch = useDispatch();
 
   const toggleTheme = () => {
@@ -42,26 +44,31 @@ const App = () => {
       <GlobalReset />
       <Suspense fallback={""}>
         {isRefreshing ? (
-          <Notify />
+          <b>Refreshing user...</b>
         ) : (
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute redirectTo="/login" component={<Contacts />} />
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <RestrictedRoute redirectTo="/" component={<Register />} />
-              }
-            />
-            <Route
-              path="/login"
-              element={<RestrictedRoute redirectTo="/" component={<Login />} />}
-            />
-          </Routes>
+          <>
+            {isLoggedIn && <Notify />}
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute redirectTo="/login" component={<Contacts />} />
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <RestrictedRoute redirectTo="/" component={<Register />} />
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <RestrictedRoute redirectTo="/" component={<Login />} />
+                }
+              />
+            </Routes>
+          </>
         )}
       </Suspense>
       <ToastContainer position="bottom-center" autoClose={3000} />

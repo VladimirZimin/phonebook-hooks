@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
@@ -19,6 +20,10 @@ export const signUp = createAsyncThunk(
       set(response.data.token);
       return response.data;
     } catch (error) {
+      error.response.data.errors.password &&
+        toast.error("password is shorter than the minimum allowed length (7)");
+
+      error.response.data.errors.email && toast.error("Invalid email");
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -32,6 +37,7 @@ export const logIn = createAsyncThunk(
       set(response.data.token);
       return response.data;
     } catch (error) {
+      toast.error("Invalid password or login");
       return thunkAPI.rejectWithValue(error.message);
     }
   }

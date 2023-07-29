@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Theme from "../../theme/theme";
 import { useTheme } from "styled-components";
 import { Button, Form, InputName, InputPhone } from "./EditForm.style";
+import InputMask from "react-input-mask";
 
 const EditForm = ({ contacts, closeEditForm }) => {
   const [name, setName] = useState(contacts.name);
@@ -49,16 +50,23 @@ const EditForm = ({ contacts, closeEditForm }) => {
         required
       />
 
-      <InputPhone
-        type="tel"
-        name="number"
-        value={number}
+      <InputMask
+        mask="+38(999)-99-99-999"
+        maskPlaceholder="-"
         onChange={handleChange}
+        value={number}
         placeholder="Number"
-        pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
-        title="Phone number must be format: 012-34-56-789"
-        required
-      />
+      >
+        <InputPhone
+          type="tel"
+          name="number"
+          value={number}
+          onChange={handleChange}
+          placeholder="Number"
+          required
+        />
+      </InputMask>
+
       {contacts.name && contacts.number && (
         <Button type="submit" disabled={false}>
           Edit

@@ -17,7 +17,7 @@ export const DeleteBtn = styled(MdClose)`
 
 export const EditBtn = styled(AiOutlineEdit)`
   ${buttonStyle}
-  margin-right: -20px;
+  margin-right: -10px;
 `;
 
 export const Button = styled.button`
@@ -35,16 +35,17 @@ export const Button = styled.button`
 export const List = styled(motion.li)`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 5px;
   color: ${({ theme }) =>
     theme.current === Theme.LIGHT ? ColorLight.TEXT : ColorDark.TEXT};
 `;
 
 export const Phone = styled.p`
-  width: 120px;
+  width: 150px;
   text-align: left;
 `;
 
 export const Name = styled.p`
-  width: 170px;
+  width: 160px;
   text-align: left;
 `;

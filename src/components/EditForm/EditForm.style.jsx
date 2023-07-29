@@ -8,7 +8,7 @@ export const Form = styled.form`
 `;
 
 export const InputName = styled.input`
-  width: 180px;
+  width: 155px;
   padding: 0;
   text-align: left;
   font-weight: 700;
@@ -21,7 +21,7 @@ export const InputName = styled.input`
 `;
 
 export const InputPhone = styled(InputName)`
-  width: 130px;
+  width: 165px;
 `;
 
 export const Button = styled.button`
