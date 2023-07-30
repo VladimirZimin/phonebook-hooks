@@ -20,10 +20,16 @@ export const signUp = createAsyncThunk(
       set(response.data.token);
       return response.data;
     } catch (error) {
+      error.response.data.code &&
+        toast.error("This email is already registered");
+
+      console.log(error.response.data);
+
       error.response.data.errors.password &&
-        toast.error("password is shorter than the minimum allowed length (7)");
+        toast.error("Password is shorter than the minimum allowed length (7)");
 
       error.response.data.errors.email && toast.error("Invalid email");
+
       return thunkAPI.rejectWithValue(error.message);
     }
   }

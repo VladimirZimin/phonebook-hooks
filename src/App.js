@@ -3,14 +3,13 @@ import Theme from "./theme/theme";
 import { ThemeProvider } from "styled-components";
 import GlobalReset from "./style/globalStyle/GlobalReset";
 import { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "./redux/auth/operations";
-import { selectIsLoggedIn, selectIsRefreshing } from "./redux/selectors";
+import { selectIsRefreshing, selectUser } from "./redux/selectors";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import { RestrictedRoute } from "./components/RestrictedRoute/RestrictedRoute";
-import Notify from "./components/Notify/Notify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = lazy(() => import("./pages/Register/Register"));
@@ -22,8 +21,7 @@ const App = () => {
     () => JSON.parse(window.localStorage.getItem("phoneTheme")) ?? Theme.LIGHT
   );
   const isRefreshing = useSelector(selectIsRefreshing);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   const toggleTheme = () => {
@@ -39,15 +37,28 @@ const App = () => {
     dispatch(currentUser());
   }, [dispatch]);
 
+  useEffect(() => {
+    user.name &&
+      toast(`${user.name} welcome to Phonebook`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: theme === Theme.LIGHT ? "light" : "dark",
+      });
+  }, [user.name]);
+
   return (
     <ThemeProvider theme={{ current: theme, toggleTheme }}>
       <GlobalReset />
-      <Suspense fallback={""}>
-        {isRefreshing ? (
-          <b>Refreshing user...</b>
-        ) : (
-          <>
-            {isLoggedIn && <Notify />}
+
+      {isRefreshing ? (
+        <b>Refreshing user...</b>
+      ) : (
+        <>
+          <Suspense fallback={""}>
             <Routes>
               <Route
                 path="/"
@@ -68,9 +79,10 @@ const App = () => {
                 }
               />
             </Routes>
-          </>
-        )}
-      </Suspense>
+          </Suspense>
+        </>
+      )}
+
       <ToastContainer position="bottom-center" autoClose={3000} />
     </ThemeProvider>
   );

@@ -3,12 +3,12 @@ import Theme, { ColorDark, ColorLight } from "../../theme/theme";
 
 export const Form = styled.form`
   display: flex;
-  gap: 20px;
+  gap: 10px;
   margin-bottom: 5px;
 `;
 
 export const InputName = styled.input`
-  width: 155px;
+  width: 140px;
   padding: 0;
   text-align: left;
   font-weight: 700;

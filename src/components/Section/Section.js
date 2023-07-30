@@ -3,10 +3,10 @@ import Theme, { ColorDark, ColorLight } from "../../theme/theme";
 
 const StyleSection = styled.section`
   position: relative;
-  width: 440px;
+  width: 390px;
   margin: 40px auto;
   margin-top: 30px;
-  padding: 0 15px;
+  padding: 0 10px;
 `;
 
 const StyleTitle = styled.h3`

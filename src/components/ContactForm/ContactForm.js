@@ -60,8 +60,6 @@ const ContactForm = () => {
         break;
 
       case "number":
-        console.log(value);
-
         setNumber(value);
         break;
 

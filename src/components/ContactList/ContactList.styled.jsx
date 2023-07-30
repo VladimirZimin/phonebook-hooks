@@ -22,7 +22,7 @@ export const EditBtn = styled(AiOutlineEdit)`
 
 export const Button = styled.button`
   padding: 0;
-  font-size: 18px;
+  font-size: 22px;
   background-color: ${({ theme }) =>
     theme.current === Theme.LIGHT ? ColorLight.BG : ColorDark.BG};
   border: none;
@@ -35,17 +35,17 @@ export const Button = styled.button`
 export const List = styled(motion.li)`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
   color: ${({ theme }) =>
     theme.current === Theme.LIGHT ? ColorLight.TEXT : ColorDark.TEXT};
 `;
 
 export const Phone = styled.p`
-  width: 150px;
+  width: 170px;
   text-align: left;
 `;
 
 export const Name = styled.p`
-  width: 160px;
+  width: 140px;
   text-align: left;
 `;
